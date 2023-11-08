@@ -1,2 +1,2 @@
-# ailoomhub
-AILoomHub is an innovative Laravel-based web application that empowers users to seamlessly integrate their OpenAI GPT tokens, creating personalized AI agents for diverse applications. With AILoomHub, users can harness the full potential of OpenAI's GPT for crafting unique AI assistants tailored to their specific needs.
+# AILoomHub
+AILoomHub lets users seamlessly integrate OpenAI GPT models, creating personalized AI agents for diverse applications. Harness the full potential of OpenAI's GPT for crafting unique assistants tailored to your needs.
