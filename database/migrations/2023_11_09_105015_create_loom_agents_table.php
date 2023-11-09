@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('loom_agents', function (Blueprint $table) {
             $table->id();
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreignId('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('name');
             $table->string('provider');
             $table->string('model');
