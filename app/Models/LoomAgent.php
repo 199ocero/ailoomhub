@@ -24,6 +24,10 @@ class LoomAgent extends Model
         'token',
     ];
 
+    protected $casts = [
+        'status' => 'boolean',
+    ];
+
     /**
      * Get the user that owns the LoomAgent
      *
