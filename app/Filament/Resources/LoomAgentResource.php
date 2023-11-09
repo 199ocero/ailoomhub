@@ -4,7 +4,9 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\LoomAgentResource\Pages;
 use App\Filament\Resources\LoomAgentResource\RelationManagers;
+use App\Models\AiModel;
 use App\Models\LoomAgent;
+use App\Models\Provider;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -17,42 +19,53 @@ class LoomAgentResource extends Resource
 {
     protected static ?string $model = LoomAgent::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-chat-bubble-left-ellipsis';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('user_id')
-                    ->relationship('user', 'name')
-                    ->required(),
-                Forms\Components\TextInput::make('name')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('provider')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('model')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('system_message')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('knowledge_base')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\Toggle::make('status')
-                    ->required(),
-                Forms\Components\TextInput::make('config_options'),
-                Forms\Components\TextInput::make('usage_count')
-                    ->required()
-                    ->numeric()
-                    ->default(0),
-                Forms\Components\DateTimePicker::make('last_used'),
-                Forms\Components\Textarea::make('token')
-                    ->required()
-                    ->maxLength(65535)
-                    ->columnSpanFull(),
+                Forms\Components\Section::make('Loom Agent')
+                    ->schema([
+                        Forms\Components\TextInput::make('name')
+                            ->placeholder('My Loom Agent')
+                            ->required()
+                            ->string()
+                            ->autofocus()
+                            ->columnSpanFull(),
+                        Forms\Components\Grid::make()
+                            ->columns(2)
+                            ->schema([
+                                Forms\Components\Select::make('provider')
+                                    ->placeholder('Select a Provider')
+                                    ->required()
+                                    ->options(Provider::all()->pluck('name', 'id')),
+                                Forms\Components\Select::make('model')
+                                    ->placeholder('Select a Model')
+                                    ->required()
+                                    ->options(AiModel::all()->pluck('name', 'id')),
+                            ]),
+                        Forms\Components\TextInput::make('token')
+                            ->label('API Secret Key')
+                            ->placeholder('Your API Secret Key')
+                            ->required()
+                            ->password()
+                            ->columnSpanFull(),
+                        Forms\Components\Textarea::make('system_message')
+                            ->label('System Message')
+                            ->default('You are a helpful assistant.')
+                            ->placeholder('The system message helps set the behavior of the assistant. For example, you can modify the personality of the assistant or provide specific instructions about how it should behave throughout the conversation.')
+                            ->required()
+                            ->string(),
+                        Forms\Components\TextInput::make('knowledge_base')
+                            ->label('Knowledge Base')
+                            ->placeholder('https://example.com/knowledge-base.pdf')
+                            ->required()
+                            ->url(),
+                        Forms\Components\Toggle::make('status')
+                            ->required()
+                            ->default(true),
+                    ])
             ]);
     }
 
@@ -60,9 +73,6 @@ class LoomAgentResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('user.name')
-                    ->numeric()
-                    ->sortable(),
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('provider')
@@ -81,14 +91,6 @@ class LoomAgentResource extends Resource
                 Tables\Columns\TextColumn::make('last_used')
                     ->dateTime()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 //
