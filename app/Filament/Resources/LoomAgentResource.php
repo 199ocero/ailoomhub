@@ -38,17 +38,17 @@ class LoomAgentResource extends Resource
                         Forms\Components\Grid::make()
                             ->columns(2)
                             ->schema([
-                                Forms\Components\Select::make('provider')
+                                Forms\Components\Select::make('provider_id')
                                     ->placeholder('Select a Provider')
                                     ->prefixIcon('heroicon-o-cube')
                                     ->required()
                                     ->options(Provider::all()->pluck('name', 'id'))
                                     ->live(),
-                                Forms\Components\Select::make('model')
+                                Forms\Components\Select::make('ai_model_id')
                                     ->placeholder('Select a Model')
                                     ->prefixIcon('heroicon-o-cube-transparent')
                                     ->required()
-                                    ->options(fn (Get $get) => AiModel::where('provider_id', $get('provider'))->pluck('name', 'id')),
+                                    ->options(fn (Get $get) => AiModel::where('provider_id', $get('provider_id'))->pluck('name', 'id')),
                             ]),
                         Forms\Components\TextInput::make('token')
                             ->label('API Secret Key')
@@ -81,23 +81,32 @@ class LoomAgentResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('provider')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('model')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('system_message')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('knowledge_base')
-                    ->searchable(),
+                    ->sortable()
+                    ->searchable()
+                    ->wrap(),
+                Tables\Columns\TextColumn::make('provider.name')
+                    ->label('Provider')
+                    ->sortable()
+                    ->searchable()
+                    ->wrap(),
+                Tables\Columns\TextColumn::make('aiModel.name')
+                    ->label('Model')
+                    ->sortable()
+                    ->searchable()
+                    ->wrap(),
                 Tables\Columns\IconColumn::make('status')
                     ->boolean(),
                 Tables\Columns\TextColumn::make('usage_count')
+                    ->label('Usage Count')
                     ->numeric()
-                    ->sortable(),
+                    ->sortable()
+                    ->wrap(),
                 Tables\Columns\TextColumn::make('last_used')
-                    ->dateTime()
-                    ->sortable(),
+                    ->label('Last Used')
+                    ->placeholder('Never used')
+                    ->dateTime('F j, Y h:i:s A')
+                    ->sortable()
+                    ->wrap(),
             ])
             ->filters([
                 //
