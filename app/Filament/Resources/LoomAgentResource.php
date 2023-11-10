@@ -9,6 +9,7 @@ use App\Models\LoomAgent;
 use App\Models\Provider;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Forms\Get;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -29,6 +30,7 @@ class LoomAgentResource extends Resource
                     ->schema([
                         Forms\Components\TextInput::make('name')
                             ->placeholder('My Loom Agent')
+                            ->prefixIcon('heroicon-o-sparkles')
                             ->required()
                             ->string()
                             ->autofocus()
@@ -38,16 +40,20 @@ class LoomAgentResource extends Resource
                             ->schema([
                                 Forms\Components\Select::make('provider')
                                     ->placeholder('Select a Provider')
+                                    ->prefixIcon('heroicon-o-cube')
                                     ->required()
-                                    ->options(Provider::all()->pluck('name', 'id')),
+                                    ->options(Provider::all()->pluck('name', 'id'))
+                                    ->live(),
                                 Forms\Components\Select::make('model')
                                     ->placeholder('Select a Model')
+                                    ->prefixIcon('heroicon-o-cube-transparent')
                                     ->required()
-                                    ->options(AiModel::all()->pluck('name', 'id')),
+                                    ->options(fn (Get $get) => AiModel::where('provider_id', $get('provider'))->pluck('name', 'id')),
                             ]),
                         Forms\Components\TextInput::make('token')
                             ->label('API Secret Key')
                             ->placeholder('Your API Secret Key')
+                            ->prefixIcon('heroicon-o-key')
                             ->required()
                             ->password()
                             ->columnSpanFull(),
@@ -60,6 +66,7 @@ class LoomAgentResource extends Resource
                         Forms\Components\TextInput::make('knowledge_base')
                             ->label('Knowledge Base')
                             ->placeholder('https://example.com/knowledge-base.pdf')
+                            ->prefixIcon('heroicon-o-book-open')
                             ->required()
                             ->url(),
                         Forms\Components\Toggle::make('status')
