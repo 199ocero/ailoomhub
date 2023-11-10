@@ -39,12 +39,14 @@ class LoomAgentResource extends Resource
                             ->columns(2)
                             ->schema([
                                 Forms\Components\Select::make('provider_id')
+                                    ->label('Provider')
                                     ->placeholder('Select a Provider')
                                     ->prefixIcon('heroicon-o-cube')
                                     ->required()
                                     ->options(Provider::all()->pluck('name', 'id'))
                                     ->live(),
                                 Forms\Components\Select::make('ai_model_id')
+                                    ->label('Model')
                                     ->placeholder('Select a Model')
                                     ->prefixIcon('heroicon-o-cube-transparent')
                                     ->required()
