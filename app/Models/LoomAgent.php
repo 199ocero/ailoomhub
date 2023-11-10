@@ -13,8 +13,8 @@ class LoomAgent extends Model
     protected $fillable = [
         'user_id',
         'name',
-        'provider',
-        'model',
+        'provider_id',
+        'ai_model_id',
         'system_message',
         'knowledge_base',
         'status',
@@ -36,5 +36,25 @@ class LoomAgent extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Get the provider of this LoomAgent
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function provider(): BelongsTo
+    {
+        return $this->belongsTo(Provider::class);
+    }
+
+    /**
+     * Get the ai model of this LoomAgent
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function aiModel(): BelongsTo
+    {
+        return $this->belongsTo(AiModel::class);
     }
 }
