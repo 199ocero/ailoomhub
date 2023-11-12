@@ -2,19 +2,20 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\LoomAgentResource\Pages;
-use App\Filament\Resources\LoomAgentResource\RelationManagers;
-use App\Models\AiModel;
-use App\Models\LoomAgent;
-use App\Models\Provider;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Forms\Get;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use App\Models\AiModel;
+use Filament\Forms\Get;
+use App\Models\Provider;
+use Filament\Forms\Form;
+use App\Models\LoomAgent;
 use Filament\Tables\Table;
+use Filament\Resources\Resource;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use App\Filament\Resources\LoomAgentResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\LoomAgentResource\RelationManagers;
 
 class LoomAgentResource extends Resource
 {
@@ -55,6 +56,7 @@ class LoomAgentResource extends Resource
                         Forms\Components\TextInput::make('token')
                             ->label('API Secret Key')
                             ->placeholder('Your API Secret Key')
+                            ->helperText('For security reasons, do not share this with anyone.')
                             ->prefixIcon('heroicon-o-key')
                             ->required()
                             ->password()
@@ -115,6 +117,8 @@ class LoomAgentResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make()
+                    ->modalHeading(fn (Model $record): string => __('filament-actions::delete.single.modal.heading', ['label' => $record->name])),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
