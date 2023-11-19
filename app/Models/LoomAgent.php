@@ -20,12 +20,12 @@ class LoomAgent extends Model
         'status',
         'config_options',
         'usage_count',
-        'last_used',
-        'token',
+        'last_used'
     ];
 
     protected $casts = [
         'status' => 'boolean',
+        'config_options' => 'array',
     ];
 
     /**
