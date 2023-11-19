@@ -136,9 +136,10 @@ class LoomAgentResource extends Resource
             ])
             ->actions([
                 Tables\Actions\ActionGroup::make([
-                    Tables\Actions\Action::make('page_retriever')
-                        ->label('Page Retriever')
-                        ->icon('heroicon-o-document-arrow-down'),
+                    Tables\Actions\Action::make('import_page')
+                        ->label('Import Page')
+                        ->icon('heroicon-o-document-arrow-down')
+                        ->url(fn (Model $record): string => route('filament.hub.resources.loom-agents.import-page', ['record' => $record->id])),
                     Tables\Actions\EditAction::make(),
                     Tables\Actions\DeleteAction::make()
                         ->modalHeading(fn (Model $record): string => __('filament-actions::delete.single.modal.heading', ['label' => $record->name])),
@@ -169,6 +170,7 @@ class LoomAgentResource extends Resource
             'index' => Pages\ListLoomAgents::route('/'),
             'create' => Pages\CreateLoomAgent::route('/create'),
             'edit' => Pages\EditLoomAgent::route('/{record}/edit'),
+            'import-page' => Pages\ImportPage::route('/{record}/import-page'),
         ];
     }
 }
