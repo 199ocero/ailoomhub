@@ -4,6 +4,7 @@ namespace App\Filament\Resources\LoomAgentResource\Pages;
 
 use App\Filament\Resources\LoomAgentResource;
 use Filament\Actions;
+use Filament\Actions\Action;
 use Filament\Resources\Pages\CreateRecord;
 use Illuminate\Support\Facades\Crypt;
 
@@ -24,6 +25,14 @@ class CreateLoomAgent extends CreateRecord
         ];
 
         return $data;
+    }
+
+    protected function getCancelFormAction(): Action
+    {
+        return Action::make('cancel')
+            ->label(__('filament-panels::resources/pages/create-record.form.actions.cancel.label'))
+            ->url($this->getRedirectUrl())
+            ->color('gray');
     }
 
     protected function getRedirectUrl(): string
