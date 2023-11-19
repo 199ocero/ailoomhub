@@ -5,6 +5,8 @@ namespace App\Console\Commands;
 use App\Models\AiModel;
 use App\Models\AiProvider;
 use Illuminate\Console\Command;
+
+use function Laravel\Prompts\error;
 use function Laravel\Prompts\info;
 use function Laravel\Prompts\text;
 use function Laravel\Prompts\select;
@@ -46,7 +48,7 @@ class AiModelCommand extends Command
         $aiName = AiModel::query()->where('name', $name)->first();
 
         if ($aiName) {
-            info($name . ' model already exists!');
+            error($name . ' model already exists!');
             return;
         }
 
@@ -56,7 +58,7 @@ class AiModelCommand extends Command
             ->first();
 
         if ($model) {
-            info($name . ' provider and model already exists!');
+            error($name . ' provider and model already exists!');
             return;
         }
 

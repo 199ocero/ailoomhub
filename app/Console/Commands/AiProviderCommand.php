@@ -4,6 +4,8 @@ namespace App\Console\Commands;
 
 use App\Models\AiProvider;
 use Illuminate\Console\Command;
+
+use function Laravel\Prompts\error;
 use function Laravel\Prompts\info;
 use function Laravel\Prompts\text;
 
@@ -37,7 +39,7 @@ class AiProviderCommand extends Command
         $provider = AiProvider::where('name', $name)->first();
 
         if ($provider) {
-            info($name . ' provider already exists!');
+            error($name . ' provider already exists!');
             return;
         }
 
