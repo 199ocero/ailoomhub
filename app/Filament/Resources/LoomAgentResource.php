@@ -6,17 +6,18 @@ use Filament\Forms;
 use Filament\Tables;
 use App\Models\AiModel;
 use Filament\Forms\Get;
-use App\Models\AiProvider;
 use Filament\Forms\Form;
 use App\Models\LoomAgent;
+use App\Models\AiProvider;
 use Filament\Tables\Table;
+use App\Models\KnowledgeBase;
 use Filament\Resources\Resource;
+use Filament\Support\Enums\ActionSize;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\LoomAgentResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\LoomAgentResource\RelationManagers;
-use App\Models\KnowledgeBase;
 
 class LoomAgentResource extends Resource
 {
@@ -83,8 +84,11 @@ class LoomAgentResource extends Resource
                             ->required()
                             ->password(),
                         Forms\Components\Toggle::make('status')
+                            ->label('Active')
                             ->required()
-                            ->default(true),
+                            ->default(true)
+                            ->onColor('success')
+                            ->offColor('danger'),
                     ])
             ]);
     }
@@ -112,8 +116,9 @@ class LoomAgentResource extends Resource
                     ->sortable()
                     ->searchable()
                     ->wrap(),
-                Tables\Columns\IconColumn::make('status')
-                    ->boolean(),
+                Tables\Columns\ToggleColumn::make('status')
+                    ->onColor('success')
+                    ->offColor('danger'),
                 Tables\Columns\TextColumn::make('usage_count')
                     ->label('Usage Count')
                     ->numeric()
@@ -130,9 +135,19 @@ class LoomAgentResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make()
-                    ->modalHeading(fn (Model $record): string => __('filament-actions::delete.single.modal.heading', ['label' => $record->name])),
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\Action::make('page_retriever')
+                        ->label('Page Retriever')
+                        ->icon('heroicon-o-document-arrow-down'),
+                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\DeleteAction::make()
+                        ->modalHeading(fn (Model $record): string => __('filament-actions::delete.single.modal.heading', ['label' => $record->name])),
+                ])
+                    ->label('Actions')
+                    ->icon('heroicon-m-ellipsis-vertical')
+                    ->size(ActionSize::Small)
+                    ->color('primary')
+                    ->button()
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
