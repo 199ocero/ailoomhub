@@ -23,7 +23,6 @@ return new class extends Migration
             $table->json('config_options')->nullable();
             $table->integer('usage_count')->default(0);
             $table->timestamp('last_used')->nullable();
-            $table->text('token');
             $table->timestamps();
         });
     }
