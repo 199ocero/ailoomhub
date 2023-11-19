@@ -2,13 +2,21 @@
 
 namespace App\Filament\Resources\LoomAgentResource\Pages;
 
-use App\Filament\Resources\LoomAgentResource;
 use Filament\Actions;
+use Illuminate\Support\Facades\Crypt;
 use Filament\Resources\Pages\EditRecord;
+use App\Filament\Resources\LoomAgentResource;
 
 class EditLoomAgent extends EditRecord
 {
     protected static string $resource = LoomAgentResource::class;
+
+    protected function mutateFormDataBeforeFill(array $data): array
+    {
+        $data['ai_provider_token'] = Crypt::decryptString($data['config_options']['ai_provider']['token']);
+        $data['knowledge_base_token'] = Crypt::decryptString($data['config_options']['knowledge_base']['token']);
+        return $data;
+    }
 
     protected function getRedirectUrl(): string
     {
