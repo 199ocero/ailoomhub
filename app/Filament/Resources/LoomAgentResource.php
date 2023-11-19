@@ -42,22 +42,22 @@ class LoomAgentResource extends Resource
                             ->schema([
                                 Forms\Components\Select::make('ai_provider_id')
                                     ->label('Provider')
-                                    ->placeholder('Select a Provider')
+                                    ->placeholder('Select Provider')
                                     ->prefixIcon('heroicon-o-cube')
                                     ->required()
                                     ->options(AiProvider::all()->pluck('name', 'id'))
                                     ->live(),
                                 Forms\Components\Select::make('ai_model_id')
                                     ->label('Model')
-                                    ->placeholder('Select a Model')
+                                    ->placeholder('Select Model')
                                     ->prefixIcon('heroicon-o-cube-transparent')
                                     ->required()
                                     ->options(fn (Get $get) => AiModel::where('ai_provider_id', $get('ai_provider_id'))->pluck('name', 'id')),
                             ]),
-                        Forms\Components\TextInput::make('token')
-                            ->label('API Secret Key')
-                            ->placeholder('Your API Secret Key')
-                            ->helperText('For security reasons, do not share this with anyone.')
+                        Forms\Components\TextInput::make('ai_provider_token')
+                            ->label('Secret Key')
+                            ->placeholder('Secret Key')
+                            ->helperText('This will be used to access the selected AI provider.')
                             ->prefixIcon('heroicon-o-key')
                             ->required()
                             ->password()
@@ -69,9 +69,19 @@ class LoomAgentResource extends Resource
                             ->string(),
                         Forms\Components\Select::make('knowledge_base_id')
                             ->label('Knowledge Base')
-                            ->placeholder('Select a Knowledge Base')
+                            ->placeholder('Select Knowledge Base')
+                            ->prefixIcon('heroicon-o-book-open')
                             ->options(KnowledgeBase::all()->pluck('name', 'id'))
+                            ->live()
                             ->required(),
+                        Forms\Components\TextInput::make('knowledge_base_token')
+                            ->label('Secret Key')
+                            ->placeholder('Secret Key')
+                            ->helperText('This will be used to access the selected knowledge base.')
+                            ->prefixIcon('heroicon-o-key')
+                            ->hidden(fn (Get $get) => $get('knowledge_base_id') == null ? true : false)
+                            ->required()
+                            ->password(),
                         Forms\Components\Toggle::make('status')
                             ->required()
                             ->default(true),
