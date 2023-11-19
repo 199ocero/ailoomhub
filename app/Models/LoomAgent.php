@@ -16,7 +16,7 @@ class LoomAgent extends Model
         'ai_provider_id',
         'ai_model_id',
         'system_message',
-        'knowledge_base',
+        'knowledge_base_id',
         'status',
         'config_options',
         'usage_count',
@@ -56,5 +56,15 @@ class LoomAgent extends Model
     public function aiModel(): BelongsTo
     {
         return $this->belongsTo(AiModel::class);
+    }
+
+    /**
+     * Get the knowledge base of this LoomAgent.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function knowledgeBase(): BelongsTo
+    {
+        return $this->belongsTo(KnowledgeBase::class);
     }
 }

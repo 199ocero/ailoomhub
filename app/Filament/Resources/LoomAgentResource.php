@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\LoomAgentResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\LoomAgentResource\RelationManagers;
+use App\Models\KnowledgeBase;
 
 class LoomAgentResource extends Resource
 {
@@ -63,16 +64,14 @@ class LoomAgentResource extends Resource
                             ->columnSpanFull(),
                         Forms\Components\Textarea::make('system_message')
                             ->label('System Message')
-                            ->default('You are a helpful assistant.')
                             ->placeholder('The system message helps set the behavior of the assistant. For example, you can modify the personality of the assistant or provide specific instructions about how it should behave throughout the conversation.')
                             ->required()
                             ->string(),
-                        Forms\Components\TextInput::make('knowledge_base')
+                        Forms\Components\Select::make('knowledge_base')
                             ->label('Knowledge Base')
-                            ->placeholder('https://example.com/knowledge-base.pdf')
-                            ->prefixIcon('heroicon-o-book-open')
-                            ->required()
-                            ->url(),
+                            ->placeholder('Select a Knowledge Base')
+                            ->options(KnowledgeBase::all()->pluck('name', 'id'))
+                            ->required(),
                         Forms\Components\Toggle::make('status')
                             ->required()
                             ->default(true),
@@ -95,6 +94,11 @@ class LoomAgentResource extends Resource
                     ->wrap(),
                 Tables\Columns\TextColumn::make('aiModel.name')
                     ->label('Model')
+                    ->sortable()
+                    ->searchable()
+                    ->wrap(),
+                Tables\Columns\TextColumn::make('knowledgeBase.name')
+                    ->label('Knowledge Base')
                     ->sortable()
                     ->searchable()
                     ->wrap(),
