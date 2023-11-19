@@ -6,7 +6,7 @@ use Filament\Forms;
 use Filament\Tables;
 use App\Models\AiModel;
 use Filament\Forms\Get;
-use App\Models\Provider;
+use App\Models\AiProvider;
 use Filament\Forms\Form;
 use App\Models\LoomAgent;
 use Filament\Tables\Table;
@@ -39,19 +39,19 @@ class LoomAgentResource extends Resource
                         Forms\Components\Grid::make()
                             ->columns(2)
                             ->schema([
-                                Forms\Components\Select::make('provider_id')
+                                Forms\Components\Select::make('ai_provider_id')
                                     ->label('Provider')
                                     ->placeholder('Select a Provider')
                                     ->prefixIcon('heroicon-o-cube')
                                     ->required()
-                                    ->options(Provider::all()->pluck('name', 'id'))
+                                    ->options(AiProvider::all()->pluck('name', 'id'))
                                     ->live(),
                                 Forms\Components\Select::make('ai_model_id')
                                     ->label('Model')
                                     ->placeholder('Select a Model')
                                     ->prefixIcon('heroicon-o-cube-transparent')
                                     ->required()
-                                    ->options(fn (Get $get) => AiModel::where('provider_id', $get('provider_id'))->pluck('name', 'id')),
+                                    ->options(fn (Get $get) => AiModel::where('ai_provider_id', $get('ai_provider_id'))->pluck('name', 'id')),
                             ]),
                         Forms\Components\TextInput::make('token')
                             ->label('API Secret Key')
@@ -88,7 +88,7 @@ class LoomAgentResource extends Resource
                     ->sortable()
                     ->searchable()
                     ->wrap(),
-                Tables\Columns\TextColumn::make('provider.name')
+                Tables\Columns\TextColumn::make('aiProvider.name')
                     ->label('Provider')
                     ->sortable()
                     ->searchable()

@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Models\Provider;
+use App\Models\AiProvider;
 use Illuminate\Console\Command;
 use function Laravel\Prompts\info;
 use function Laravel\Prompts\text;
@@ -34,14 +34,14 @@ class AiProviderCommand extends Command
             required: 'Name is required.'
         );
 
-        $provider = Provider::where('name', $name)->first();
+        $provider = AiProvider::where('name', $name)->first();
 
         if ($provider) {
             info($name . ' provider already exists!');
             return;
         }
 
-        Provider::query()->create([
+        AiProvider::query()->create([
             'name' => $name,
         ]);
 

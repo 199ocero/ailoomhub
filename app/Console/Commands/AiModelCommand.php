@@ -3,7 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Models\AiModel;
-use App\Models\Provider;
+use App\Models\AiProvider;
 use Illuminate\Console\Command;
 use function Laravel\Prompts\info;
 use function Laravel\Prompts\text;
@@ -32,7 +32,7 @@ class AiModelCommand extends Command
     {
         $provider = select(
             label: 'Select a Provider',
-            options: Provider::query()->pluck('name', 'id'),
+            options: AiProvider::query()->pluck('name', 'id'),
             required: 'Provider is required.',
             scroll: 10
         );
@@ -51,7 +51,7 @@ class AiModelCommand extends Command
         }
 
         $model = AiModel::query()
-            ->where('provider_id', $provider)
+            ->where('ai_provider_id', $provider)
             ->where('name', $name)
             ->first();
 
@@ -61,7 +61,7 @@ class AiModelCommand extends Command
         }
 
         AiModel::query()->create([
-            'provider_id' => $provider,
+            'ai_provider_id' => $provider,
             'name' => $name,
         ]);
 

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('name');
-            $table->foreignId('provider_id')->references('id')->on('providers')->onDelete('cascade');
+            $table->foreignId('ai_provider_id')->references('id')->on('ai_providers')->onDelete('cascade');
             $table->foreignId('ai_model_id')->references('id')->on('ai_models')->onDelete('cascade');
             $table->string('system_message');
             $table->string('knowledge_base');

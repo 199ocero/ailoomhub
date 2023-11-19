@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('ai_models', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('provider_id')->references('id')->on('providers')->onDelete('cascade');
+            $table->foreignId('ai_provider_id')->references('id')->on('ai_providers')->onDelete('cascade');
             $table->string('name');
             $table->timestamps();
         });

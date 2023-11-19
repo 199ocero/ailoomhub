@@ -11,7 +11,7 @@ class AiModel extends Model
     use HasFactory;
 
     protected $fillable = [
-        'provider_id',
+        'ai_provider_id',
         'name',
     ];
 
@@ -20,8 +20,8 @@ class AiModel extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function provider(): BelongsTo
+    public function aiProvider(): BelongsTo
     {
-        return $this->belongsTo(Provider::class);
+        return $this->belongsTo(AiProvider::class);
     }
 }
