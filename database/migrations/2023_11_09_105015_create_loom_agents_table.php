@@ -17,8 +17,8 @@ return new class extends Migration
             $table->string('name');
             $table->foreignId('ai_provider_id')->references('id')->on('ai_providers')->onDelete('cascade');
             $table->foreignId('ai_model_id')->references('id')->on('ai_models')->onDelete('cascade');
+            $table->foreignId('knowledge_base_id')->references('id')->on('knowledge_bases')->onDelete('cascade');
             $table->string('system_message');
-            $table->string('knowledge_base');
             $table->boolean('status')->default(true);
             $table->json('config_options')->nullable();
             $table->integer('usage_count')->default(0);
