@@ -67,7 +67,7 @@ class LoomAgentResource extends Resource
                             ->placeholder('The system message helps set the behavior of the assistant. For example, you can modify the personality of the assistant or provide specific instructions about how it should behave throughout the conversation.')
                             ->required()
                             ->string(),
-                        Forms\Components\Select::make('knowledge_base')
+                        Forms\Components\Select::make('knowledge_base_id')
                             ->label('Knowledge Base')
                             ->placeholder('Select a Knowledge Base')
                             ->options(KnowledgeBase::all()->pluck('name', 'id'))
